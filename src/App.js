@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import "./App.css";
 
@@ -28,7 +27,7 @@ export default function App() {
   /* ---------- GAME LOGIC ---------- */
 
   function createNumbers(size) {
-    return [...Array(size * size - 1).keys()].map(n => n + 1);
+    return [...Array(size * size - 1).keys()].map((n) => n + 1);
   }
 
   function countInversions(arr) {
@@ -80,24 +79,92 @@ export default function App() {
     return arr[arr.length - 1] === 0;
   }
 
+  // function handleClick(index) {
+  //   if (won) return;
+
+  //   const emptyIndex = tiles.indexOf(0);
+  //   if (!isAdjacent(index, emptyIndex)) return;
+
+  //   const newTiles = [...tiles];
+  //   [newTiles[index], newTiles[emptyIndex]] = [
+  //     newTiles[emptyIndex],
+  //     newTiles[index],
+  //   ];
+
+  //   setTiles(newTiles);
+  //   setMoves(m => m + 1);
+
+  //   if (isSolved(newTiles)) {
+  //     setWon(true);
+  //     setBest(b => ({
+  //       ...b,
+  //       [gridSize]:
+  //         b[gridSize] === undefined || moves + 1 < b[gridSize]
+  //           ? moves + 1
+  //           : b[gridSize],
+  //     }));
+  //   }
+  // }
   function handleClick(index) {
     if (won) return;
 
     const emptyIndex = tiles.indexOf(0);
-    if (!isAdjacent(index, emptyIndex)) return;
+    const a = indexToRowCol(index);
+    const e = indexToRowCol(emptyIndex);
 
     const newTiles = [...tiles];
-    [newTiles[index], newTiles[emptyIndex]] = [
-      newTiles[emptyIndex],
-      newTiles[index],
-    ];
 
-    setTiles(newTiles);
-    setMoves(m => m + 1);
+    // Adjacent → simple swap
+    if (isAdjacent(index, emptyIndex)) {
+      [newTiles[index], newTiles[emptyIndex]] = [
+        newTiles[emptyIndex],
+        newTiles[index],
+      ];
+      setTiles(newTiles);
+      setMoves((m) => m + 1);
+    }
+
+    // Same row → slide row
+    else if (a.row === e.row) {
+      if (index < emptyIndex) {
+        // slide right
+        for (let i = emptyIndex; i > index; i--) {
+          newTiles[i] = newTiles[i - 1];
+        }
+      } else {
+        // slide left
+        for (let i = emptyIndex; i < index; i++) {
+          newTiles[i] = newTiles[i + 1];
+        }
+      }
+
+      newTiles[index] = 0;
+      setTiles(newTiles);
+      setMoves((m) => m + 1);
+    }
+
+    // Same column → slide column
+    else if (a.col === e.col) {
+      if (index < emptyIndex) {
+        // slide down
+        for (let i = emptyIndex; i > index; i -= gridSize) {
+          newTiles[i] = newTiles[i - gridSize];
+        }
+      } else {
+        // slide up
+        for (let i = emptyIndex; i < index; i += gridSize) {
+          newTiles[i] = newTiles[i + gridSize];
+        }
+      }
+
+      newTiles[index] = 0;
+      setTiles(newTiles);
+      setMoves((m) => m + 1);
+    }
 
     if (isSolved(newTiles)) {
       setWon(true);
-      setBest(b => ({
+      setBest((b) => ({
         ...b,
         [gridSize]:
           b[gridSize] === undefined || moves + 1 < b[gridSize]
@@ -124,8 +191,9 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="app-header">Jigsaw Puzzle</div>
       <div className="grid-selector">
-        {[3, 4, 5].map(size => (
+        {[3, 4, 5].map((size) => (
           <button
             key={size}
             onClick={() => setGridSize(size)}
