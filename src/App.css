@@ -8,7 +8,7 @@
 }
 
 .app-header {
-  font-size: clamp(1.25rem, 2.5vw, 5rem);
+  font-size: clamp(1.5rem, 4vw, 3rem);
 }
 
 .grid-selector {
@@ -23,7 +23,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-size: clamp(1.25rem, 2vw, 2.5rem);
+  font-size: clamp(1rem, 2.8vw, 1.75rem);
 }
 
 .grid-selector button.active {
@@ -34,7 +34,7 @@
   display: flex;
   gap: 16px;
   font-weight: 600;
-  font-size: clamp(1rem, 2vw, 2rem);
+  font-size: clamp(1.1rem, 3vw, 2rem);
 }
 
 .shuffle-btn {
@@ -45,7 +45,7 @@
   color: inherit;
   font-weight: 600;
   cursor: pointer;
-  font-size: clamp(1.25rem, 2vw, 2.5rem);
+  font-size: clamp(1.1rem, 3.5vw, 2rem);
 }
 
 .board {
@@ -64,7 +64,7 @@
   background: #4b5563;
   color: white;
   font-weight: bold;
-  font-size: clamp(3rem, 4vw, 5rem);
+  font-size: clamp(1.25rem, 5vw, 3.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
